@@ -40,3 +40,6 @@ sysinfo.txt
 # Assets
 Logs/
 UserSettings/
+
+# ProBuilder Settings
+ProjectSettings/Packages/com.unity.probuilder/Settings.json
