@@ -1,7 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Playables;    // Timeline をスクリプトからコントロールするために必要
+using Cinemachine;
 
 /// <summary>
 /// ゲーム全体を管理するコンポーネント
@@ -9,39 +8,47 @@ using UnityEngine.Playables;    // Timeline をスクリプトからコントロ
 /// </summary>
 public class NinjaGameManager : MonoBehaviour
 {
-    [SerializeField] GameObject m_playerPrefab = null;
+    [SerializeField] GameObject _playerPrefab = null;
     /// <summary>ゲーム開始時に再生する PlayableDirector</summary>
-    [SerializeField] PlayableDirector m_openingCutScene = null;
+    [SerializeField] PlayableDirector _openingCutScene = null;
     /// <summary>ゲームの状態</summary>
-    GameState m_state = GameState.None;
-    
+    GameState _state = GameState.None;
+
     void Update()
     {
-        switch (m_state)
+        switch (_state)
         {
             // オープニングを再生する
             case GameState.None:
-                if (m_openingCutScene)
+                if (_openingCutScene)
                 {
-                    m_openingCutScene.Play();
+                    _openingCutScene.Play();
                 }
-                m_state = GameState.Opening;
+                _state = GameState.Opening;
                 break;
             // オープニングの再生が終わったらゲームを開始する
             case GameState.Opening:
-                if (m_openingCutScene && m_openingCutScene.state != PlayState.Playing)
+                if (_openingCutScene && _openingCutScene.state != PlayState.Playing)
                 {
-                    m_openingCutScene.gameObject.SetActive(false);
-                    Instantiate(m_playerPrefab, Vector3.zero, m_playerPrefab.transform.rotation);
-                    m_state = GameState.InGame;
+                    _openingCutScene.gameObject.SetActive(false);
+                    StartGame();
                 }
-                else if (!m_openingCutScene)
+                else if (!_openingCutScene)
                 {
-                    Instantiate(m_playerPrefab, Vector3.zero, m_playerPrefab.transform.rotation);
-                    m_state = GameState.InGame;
+                    StartGame();
                 }
                 break;
         }
+    }
+
+    void StartGame()
+    {
+        _state = GameState.InGame;
+        var p = Instantiate(_playerPrefab, Vector3.zero, _playerPrefab.transform.rotation);
+        // vCam で生成したプレイヤーを追う
+        var vCam = Camera.main.GetComponent<CinemachineBrain>().ActiveVirtualCamera;
+        vCam.LookAt = p.transform;
+        vCam.Follow = p.transform;
     }
 }
 
