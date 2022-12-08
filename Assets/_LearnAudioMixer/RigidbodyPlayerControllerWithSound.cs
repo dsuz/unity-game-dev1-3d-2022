@@ -83,7 +83,7 @@ public class RigidbodyPlayerControllerWithSound : MonoBehaviour
 
                 // 入力方向に滑らかに回転させる
                 Quaternion targetRotation = Quaternion.LookRotation(dir);
-                this.transform.rotation = Quaternion.Slerp(this.transform.rotation, targetRotation, Time.fixedDeltaTime * _turnSpeed);
+                this.transform.rotation = Quaternion.Lerp(this.transform.rotation, targetRotation, Time.fixedDeltaTime * _turnSpeed);
             }
         }
     }
