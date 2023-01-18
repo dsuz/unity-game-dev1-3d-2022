@@ -18,6 +18,7 @@ public class CharacterMove3D : MonoBehaviour
     [Tooltip("空中ジャンプ可能な回数")]
     [SerializeField] int _maxJumpCountInTheAir = 1;
     Rigidbody _rb = default;
+    bool _isGrounded = false;
 
     void Start()
     {
@@ -38,7 +39,7 @@ public class CharacterMove3D : MonoBehaviour
 
         _rb.velocity = dir.normalized * _moveSpeed + _rb.velocity.y * Vector3.up;  // Y 軸方向の速度は変えず、XZ 軸方向に移動する
 
-        if (Input.GetButtonDown("Jump"))
+        if (Input.GetButtonDown("Jump") && _isGrounded)
         {
             Vector3 velocity = _rb.velocity;
             velocity.y = _jumpSpeed;
@@ -50,6 +51,22 @@ public class CharacterMove3D : MonoBehaviour
             var bullet = Instantiate(_bullet);
             bullet.transform.forward = this.transform.forward;
             bullet.transform.position = _muzzle.transform.position;
+        }
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.tag.Equals("Ground"))
+        {
+            _isGrounded = true;
+        }
+    }
+
+    void OnTriggerExit(Collider other)
+    {
+        if (other.tag.Equals("Ground"))
+        { 
+            _isGrounded = false;
         }
     }
 }
