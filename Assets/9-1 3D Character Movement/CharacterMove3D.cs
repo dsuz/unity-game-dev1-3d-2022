@@ -32,6 +32,9 @@ public class CharacterMove3D : MonoBehaviour
         float h = Input.GetAxisRaw("Horizontal");
         float v = Input.GetAxisRaw("Vertical");
         Vector3 dir = Vector3.right * h + Vector3.forward * v;
+        // 入力ベクトルをカメラを基準に座標系を変換する
+        dir = Camera.main.transform.TransformDirection(dir);
+        dir.y = 0;  // 垂直方向は無視する
         
         if (dir != Vector3.zero)
         {
