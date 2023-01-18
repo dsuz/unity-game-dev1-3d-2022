@@ -11,6 +11,10 @@ public class CharacterMove3D : MonoBehaviour
     [SerializeField] float _moveSpeed = 1f;
     [Tooltip("ジャンプ速度")]
     [SerializeField] float _jumpSpeed = 1f;
+    [Tooltip("弾を生成する場所")]
+    [SerializeField] Transform _muzzle;
+    [Tooltip("弾のプレハブ")]
+    [SerializeField] Bullet3D _bullet;
     [Tooltip("空中ジャンプ可能な回数")]
     [SerializeField] int _maxJumpCountInTheAir = 1;
     Rigidbody _rb = default;
