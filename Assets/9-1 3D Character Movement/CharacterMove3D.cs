@@ -19,6 +19,7 @@ public class CharacterMove3D : MonoBehaviour
     [SerializeField] int _maxJumpCountInTheAir = 1;
     Rigidbody _rb = default;
     bool _isGrounded = false;
+    int _jumpCount = 0;
 
     void Start()
     {
@@ -39,11 +40,23 @@ public class CharacterMove3D : MonoBehaviour
 
         _rb.velocity = dir.normalized * _moveSpeed + _rb.velocity.y * Vector3.up;  // Y 軸方向の速度は変えず、XZ 軸方向に移動する
 
-        if (Input.GetButtonDown("Jump") && _isGrounded)
+        if (Input.GetButtonDown("Jump"))
         {
-            Vector3 velocity = _rb.velocity;
-            velocity.y = _jumpSpeed;
-            _rb.velocity = velocity;
+            if (_isGrounded)
+            {
+                _jumpCount = 0;
+            }   // 地上ジャンプ
+            else
+            {
+                _jumpCount++;
+            }   // 空中ジャンプ
+
+            if (_jumpCount <= _maxJumpCountInTheAir)
+            {
+                Vector3 velocity = _rb.velocity;
+                velocity.y = _jumpSpeed;
+                _rb.velocity = velocity;
+            }   // ジャンプ可能な場合は飛ぶ
         }   // ジャンプ処理は直接速度を操作する（AddForce だと２段ジャンプの挙動で問題になる）
 
         if (Input.GetButtonDown("Fire1"))
