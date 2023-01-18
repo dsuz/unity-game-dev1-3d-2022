@@ -28,14 +28,15 @@ public class CharacterMove3D : MonoBehaviour
     {
         // 方向の入力を処理する
         float h = Input.GetAxisRaw("Horizontal");
-        Vector3 dir = Vector3.right * h;
+        float v = Input.GetAxisRaw("Vertical");
+        Vector3 dir = Vector3.right * h + Vector3.forward * v;
         
         if (dir != Vector3.zero)
         {
             this.transform.forward = dir;
         }   // 方向の入力がない場合は何もしない, 入力されたらその方向を向く
 
-        _rb.velocity = dir * _moveSpeed + _rb.velocity.y * Vector3.up;  // Y 軸方向の速度は変えず、XZ 軸方向に移動する
+        _rb.velocity = dir.normalized * _moveSpeed + _rb.velocity.y * Vector3.up;  // Y 軸方向の速度は変えず、XZ 軸方向に移動する
 
         if (Input.GetButtonDown("Jump"))
         {
