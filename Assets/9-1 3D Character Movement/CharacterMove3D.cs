@@ -44,5 +44,12 @@ public class CharacterMove3D : MonoBehaviour
             velocity.y = _jumpSpeed;
             _rb.velocity = velocity;
         }   // ジャンプ処理は直接速度を操作する（AddForce だと２段ジャンプの挙動で問題になる）
+
+        if (Input.GetButtonDown("Fire1"))
+        {
+            var bullet = Instantiate(_bullet);
+            bullet.transform.forward = this.transform.forward;
+            bullet.transform.position = _muzzle.transform.position;
+        }
     }
 }

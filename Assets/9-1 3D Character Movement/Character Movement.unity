@@ -159,8 +159,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _moveSpeed: 5
   _jumpSpeed: 5
-  _muzzle: {fileID: 0}
-  _bullet: {fileID: 0}
+  _muzzle: {fileID: 1127918320}
+  _bullet: {fileID: 3053934496582526471, guid: 2d6c238a520023f40a73407c7d3b5554, type: 3}
   _maxJumpCountInTheAir: 1
 --- !u!136 &121975517
 CapsuleCollider:
