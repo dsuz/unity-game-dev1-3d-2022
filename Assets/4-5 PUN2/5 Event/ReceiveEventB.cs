@@ -1,0 +1,47 @@
+﻿using UnityEngine;
+using UnityEngine.UI;
+using ExitGames.Client.Photon;  // EventData を使うため
+using Photon.Pun;   // PhotonNetwork を使うため
+using System;
+
+/// <summary>
+/// イベントを受け取るコンポーネント（パターン B）
+/// やっていること：
+/// 1. ExitGames.Client.Photon.EventData 型の変数をパラメータとして受け取るメソッドを定義する
+/// 2. 定義したメソッドを PhotonNetwork.NetworkingClient.EventReceived イベントに登録する
+/// 3. イベントが Raise されると登録したメソッドが呼ばれるので、呼ばれた時の処理を実装する
+/// イベントを受け取るコンポーネントはネットワークコンポーネントやオブジェクトである必要はない。
+/// （MonoBehaviourPunCallbacks を継承したり、Photon View をアタッチする必要はない）
+/// </summary>
+public class ReceiveEventB : MonoBehaviour
+{
+    /// <summary>ログ出力のための Text</summary>
+    [SerializeField] Text _logText;
+
+    /// <summary>オブジェクトが有効になった時にイベントにメソッドを登録する</summary>
+    private void OnEnable()
+    {
+        PhotonNetwork.NetworkingClient.EventReceived += EventReceived;
+    }
+
+    /// <summary>オブジェクトが無効になった時にイベントからメソッドを解除する</summary>
+    private void OnDisable()
+    {
+        PhotonNetwork.NetworkingClient.EventReceived -= EventReceived;
+    }
+
+    /// <summary>
+    /// イベントデータとして渡された内容をログに出力する
+    /// </summary>
+    /// <param name="e">イベントデータ</param>
+    void EventReceived(EventData e)
+    {
+        if ((int)e.Code < 200)  // 200 以上はシステムで使われているので処理しない
+        {
+            // イベントで受け取った内容をログに出力する
+            string message = $"Event received by {this.GetType().Name}. EventCode: {e.Code.ToString()}, Message: {e.CustomData.ToString()}, From: {e.Sender}";
+            Debug.Log(message);
+            _logText.text = $"{DateTime.Now.ToString("G")} {message}\n\n" + _logText.text;
+        }
+    }
+}

@@ -101,11 +101,14 @@ public class NetworkManager : MonoBehaviourPunCallbacks // Photon Realtime 用�
     {
         // プレイヤーをどこに spawn させるか決める
         int actorNumber = PhotonNetwork.LocalPlayer.ActorNumber;    // 自分の ActorNumber を取得する。なお ActorNumber は「1から」入室順に振られる。
-        Debug.Log("My ActorNumber: " + actorNumber);
-        Transform spawnPoint = _spawnPositions[actorNumber - 1];
 
-        // プレイヤーを生成し、他のクライアントと同期する
-        GameObject player = PhotonNetwork.Instantiate(_playerPrefabName, spawnPoint.position, spawnPoint.rotation);
+        if (_playerPrefabName.Length > 0)
+        {
+            Debug.Log("My ActorNumber: " + actorNumber);
+            Transform spawnPoint = _spawnPositions[actorNumber - 1];
+            // プレイヤーを生成し、他のクライアントと同期する
+            GameObject player = PhotonNetwork.Instantiate(_playerPrefabName, spawnPoint.position, spawnPoint.rotation);
+        }   // プレイヤープレハブ名が空白の時はプレイヤーを生成しない
 
         /* **************************************************
          * ルームに参加している人数が最大に達したら部屋を閉じる（参加を締め切る）
