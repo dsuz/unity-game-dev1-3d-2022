@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Cave
   - Bullet
+  - SlowdownTarget
+  - Coin
   layers:
   - Default
   - TransparentFX
